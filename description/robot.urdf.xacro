@@ -1,7 +1,502 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
 
-    <!-- Example link -->
-    <link name="base_link"></link>
+    <link name = "world"/>
+
+    <joint name = "world_joint" type = "fixed">
+        <parent link = "world" />
+        <child link = "chassis_link" />
+        <origin xyz="0 0 4" rpy= "0 0 1.57"/>
+    </joint>
+
+    <link name="chassis_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/chassis_v2.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="white">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/chassis_v2.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "head_joint" type = "continuous">
+        <parent link = "chassis_link" />
+        <child link = "head_link" />
+        <origin xyz="0 0 0" rpy= "1.57 -1.57 0"/>
+        <axis xyz="1 0 0" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="head_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/head_piece.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="white">
+                <color rgba="255 255 255 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/head_piece.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "servo_ra_joint" type = "fixed">
+        <parent link = "chassis_link" />
+        <child link = "servo_ra_link" />
+        <origin xyz="0.6 0.03 -0.45" rpy="1.57 3.14 1.57"/>
+    </joint>
+
+    <link name="servo_ra_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "servo_la_joint" type = "fixed">
+        <parent link = "chassis_link" />
+        <child link = "servo_la_link" />
+        <origin xyz="-0.6 0.03 -0.45" rpy="-1.57 3.14 1.57"/>
+    </joint>
+
+    <link name="servo_la_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "r_arm_joint" type = "continuous">
+        <parent link = "servo_ra_link" />
+        <child link = "r_arm_link" />
+        <origin xyz="0 0 0.2 " rpy="0 0 1.57"/>
+        <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="r_arm_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/upper_arm.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/upper_arm.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "l_arm_joint" type = "continuous">
+        <parent link = "servo_la_link" />
+        <child link = "l_arm_link" />
+        <origin xyz="0 0 0.2 " rpy="0 0 1.57"/>
+        <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="l_arm_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/upper_arm.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/upper_arm.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "servo_ll_joint" type = "continuous">
+        <parent link = "chassis_link" />
+        <child link = "servo_ll_link" />
+        <origin xyz="-0.8 0.025 -1.8 " rpy="0 -1.57 3.14"/>
+        <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="servo_ll_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "upper_limb_ll_joint" type = "fixed">
+        <parent link = "servo_ll_link" />
+        <child link = "upper_limb_ll_link" />
+        <origin xyz="0 0 0.18" rpy="0 0 1.57"/>
+        <!-- <axis xyz="0 0 1" /> -->
+        <!-- <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" /> -->
+    </joint>
+
+    <link name="upper_limb_ll_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/upper_limb.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/upper_limb.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "servo_ll2_joint" type = "fixed">
+        <parent link = "upper_limb_ll_link" />
+        <child link = "servo_ll2_link" />
+        <origin xyz="0 1 -0.18" rpy="0 0 1.57"/>
+    </joint>
+
+    <link name="servo_ll2_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "lower_limb_ll_joint" type = "continuous">
+        <parent link = "servo_ll2_link" />
+        <child link = "lower_limb_ll_link" />
+        <origin xyz="0 0 0.35" rpy="0 3.14 1"/>
+        <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="lower_limb_ll_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/lower_limb.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/lower_limb.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "bldc_l_joint" type = "fixed">
+        <parent link = "lower_limb_ll_link" />
+        <child link = "bldc_l_link" />
+        <origin xyz="0 -0.92 -0.16" rpy="0 0 0"/>
+    </joint>
+
+    <link name="bldc_l_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/bldc_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="white">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/bldc_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "wheel_l_joint" type = "continuous">
+        <parent link = "bldc_l_link" />
+        <child link = "wheel_l_link" />
+        <origin xyz="0 0 0.3" rpy="0 0 0"/>
+        <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="wheel_l_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/wheel.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/wheel.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+
+    <joint name = "servo_rl_joint" type = "continuous">
+        <parent link = "chassis_link" />
+        <child link = "servo_rl_link" />
+        <origin xyz="0.8 0.025 -1.8 " rpy="0 -1.57 0"/>
+        <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="servo_rl_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+
+    <joint name = "upper_limb_rl_joint" type = "fixed">
+        <parent link = "servo_rl_link" />
+        <child link = "upper_limb_rl_link" />
+        <origin xyz="0 0 0.18" rpy="0 0 1.57"/>
+        <!-- <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" /> -->
+    </joint>
+
+    <link name="upper_limb_rl_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/upper_limb.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/upper_limb.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+
+    <joint name = "servo_rl2_joint" type = "fixed">
+        <parent link = "upper_limb_rl_link" />
+        <child link = "servo_rl2_link" />
+        <origin xyz="0 1 -0.18" rpy="0 0 1.57"/>
+    </joint>
+
+    <link name="servo_rl2_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/servo_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "lower_limb_rl_joint" type = "continuous">
+        <parent link = "servo_rl2_link" />
+        <child link = "lower_limb_rl_link" />
+        <origin xyz="0 0 0.35" rpy="0 -3.14 2.14"/>
+        <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="lower_limb_rl_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/lower_limb.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/lower_limb.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "bldc_r_joint" type = "fixed">
+        <parent link = "lower_limb_rl_link" />
+        <child link = "bldc_r_link" />
+        <origin xyz="0 -0.92 -0.16" rpy="0 0 0"/>
+    </joint>
+
+    <link name="bldc_r_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/bldc_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="white">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/bldc_motor.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+    <joint name = "wheel_r_joint" type = "continuous">
+        <parent link = "bldc_r_link" />
+        <child link = "wheel_r_link" />
+        <origin xyz="0 0 0.3" rpy="0 0 0"/>
+        <axis xyz="0 0 1" />
+        <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+    </joint>
+
+    <link name="wheel_r_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pet2/meshes/wheel.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pet2/meshes/wheel.stl" scale="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+        </inertial>
+    </link>
+
+
+
 
 </robot>
